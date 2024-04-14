@@ -4,6 +4,7 @@ from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.decorators import login_required
 from .forms import CatPostForm, CommentForm
 from .models import CatPost, Comment
+from django.db.models import Q
 
 def index(request):
     return render(request, 'index.html')
@@ -61,7 +62,9 @@ def create_post(request):
 
 def view_photos(request):
     cat_posts = CatPost.objects.all()
-    
+    hashtag = request.GET.get('hashtag')
+    if hashtag:
+        cat_posts = cat_posts.filter(Q(comment__icontains=f"#{hashtag}"))
     context = {
         'cat_posts': cat_posts,
     }

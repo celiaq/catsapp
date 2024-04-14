@@ -8,6 +8,11 @@ Cats_app add post
         <h1>View Cat Photos</h1>
     </header>
     <main>
+        <h3>Filter by Hashtag:</h3>
+    <form method="get" action="{% url 'view_photos' %}">
+        <input type="text" name="hashtag" placeholder="Enter hashtag">
+        <button type="submit">Filter</button>
+    </form>
         <div>
             Logged in as: {{ request.user.username }}
             {% for post in cat_posts %}

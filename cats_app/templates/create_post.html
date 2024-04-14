@@ -8,6 +8,10 @@ Cats_app add post
         <h1>Create a New Cat Post</h1>
     </header>
     <main>
+        <form method="get" action="{% url 'view_photos' %}">
+            <input type="text" name="hashtag" placeholder="Enter hashtag">
+            <button type="submit">Filter</button>
+        </form>
         <form method="post" enctype="multipart/form-data">
             {% csrf_token %}
             {{ form.as_p }}
