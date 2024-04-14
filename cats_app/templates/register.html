@@ -1,0 +1,21 @@
+{% extends 'index.html' %}
+{% block title %}
+Cats_app register
+{% endblock %}
+{% block content%}
+<body>
+    <header>
+        <h1>Register</h1>
+    </header>
+    <main>
+        <form method="post">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit">Register</button>
+        </form>
+    </main>
+    <footer>
+        <p>&copy; 2024 Cats App</p>
+    </footer>
+</body>
+{% endblock %}

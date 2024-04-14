@@ -1,0 +1,21 @@
+{% extends 'index.html' %}
+{% block title %}
+Cats_app add post
+{% endblock %}
+{% block content%}
+<body>
+    <header>
+        <h1>Create a New Cat Post</h1>
+    </header>
+    <main>
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit">Create Post</button>
+        </form>
+    </main>
+    <footer>
+        <p>&copy; 2024 Cats App</p>
+    </footer>
+</body>
+{% endblock %}
