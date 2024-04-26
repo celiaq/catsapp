@@ -10,4 +10,5 @@ urlpatterns = [
     path('add/', views.create_post, name='add_cat_post'),
     path('view-photos/', views.view_photos, name='view_photos'),
     path('delete-photo/<int:post_pk>/', views.delete_photo, name='delete_photo'),
+    path("photo/<int:pk>/", views.detail, name="detail"),
 ]

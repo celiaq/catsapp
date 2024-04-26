@@ -2,8 +2,30 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.decorators import login_required
-from .forms import CatPostForm
-from .models import CatPost
+from .forms import CatPostForm, CommentForm
+from .models import CatPost, Comment
+from django.db.models import Q
+from rest_framework import permissions
+from drf_yasg import openapi
+
+from rest_framework import permissions
+from drf_yasg.views import get_schema_view
+from drf_yasg import openapi
+
+schema_view = get_schema_view(
+   openapi.Info(
+      title="Your API title",
+      default_version='v1',
+      description="Your API description",
+      terms_of_service="https://www.google.com/policies/terms/",
+      contact=openapi.Contact(email="contact@yourdomain.com"),
+      license=openapi.License(name="BSD License"),
+   ),
+   public=True,
+   permission_classes=(permissions.AllowAny,),
+)
+
+
 
 
 def index(request):
@@ -62,7 +84,9 @@ def create_post(request):
 
 def view_photos(request):
     cat_posts = CatPost.objects.all()
-    
+    hashtag = request.GET.get('hashtag')
+    if hashtag:
+        cat_posts = cat_posts.filter(Q(comment__icontains=f"#{hashtag}"))
     context = {
         'cat_posts': cat_posts,
     }
@@ -74,3 +98,23 @@ def delete_photo(request, post_pk):
     if request.method == 'POST':
         post.delete()
     return redirect('view_photos')
+
+def detail(request, pk):
+    photo = get_object_or_404(CatPost, pk=pk)
+    comments = Comment.objects.filter(photo=photo)
+
+    if request.method == "POST":
+        form = CommentForm(request.POST)
+        if form.is_valid():
+            comment = form.save(commit=False)
+            comment.user = request.user
+            comment.photo = photo
+            comment.save()
+            return redirect("photo_detail", pk=pk)
+    else:
+        form = CommentForm()
+    return render(
+        request,
+        "detail.html",
+        {"photo": photo, "comments": comments, "form": form},
+    )

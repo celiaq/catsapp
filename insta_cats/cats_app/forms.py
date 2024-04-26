@@ -1,8 +1,7 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth.models import User
-from .models import CatPost
-
+from .models import CatPost, Comment
 class RegisterForm(UserCreationForm):
     email = forms.EmailField(required=True)
 
@@ -26,3 +25,8 @@ class CatPostForm(forms.ModelForm):
         widgets = {
             'comment': forms.Textarea(attrs={'rows': 4}),
         }
+
+class CommentForm(forms.ModelForm):
+    class Meta:
+        model = Comment
+        fields = ["text"]

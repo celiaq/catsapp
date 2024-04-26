@@ -8,11 +8,16 @@ Cats_app add post
         <h1>View Cat Photos</h1>
     </header>
     <main>
+        <h3>Filter by Hashtag:</h3>
+    <form method="get" action="{% url 'view_photos' %}">
+        <input type="text" name="hashtag" placeholder="Enter hashtag">
+        <button type="submit">Filter</button>
+    </form>
         <div>
             Logged in as: {{ request.user.username }}
             {% for post in cat_posts %}
                 <div>
-                    <img src="{{ post.image.url }}" alt="{{ post.user.username }}" style="width: 420px;height: 360px;">
+                    <a href="{% url 'detail' post.pk %}"><img src={{ post.image.url }} style="width:420px;height:360px;"></a></li>
                     <p>Posted by: {{ post.user.username }}</p>
                     <p>Comment: {{ post.comment }}</p>
                     <p>Date Added: {{ post.date_added }}</p>

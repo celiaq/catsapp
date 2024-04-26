@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'insta_cats',
     'cats_app',
+    'drf_yasg',
 ]
 
 MIDDLEWARE = [
