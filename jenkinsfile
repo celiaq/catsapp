@@ -1,0 +1,33 @@
+pipeline {
+    agent any
+    
+    stages {
+        stage('Checkout') {
+            steps {
+                // Étape de récupération du code depuis le référentiel Git
+                checkout scm
+            }
+        }
+        
+        stage('Install Dependencies') {
+            steps {
+                // Installez les dépendances nécessaires pour exécuter les tests Django
+                sh 'pip install -r requirements.txt'  // Assurez-vous que requirements.txt contient toutes les dépendances nécessaires
+            }
+        }
+        
+        stage('Run Tests') {
+            steps {
+                // Exécutez les tests Django
+                sh 'python manage.py test'  // Assurez-vous que cela exécute vos tests Django correctement
+            }
+        }
+    }
+    
+    post {
+        always {
+            // Archiver les résultats des tests
+            junit '/test-results//.xml'
+        }
+    }
+}

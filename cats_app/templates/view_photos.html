@@ -1,0 +1,33 @@
+{% extends 'index.html' %}
+{% block title %}
+Cats_app add post
+{% endblock %}
+{% block content%}
+<body>
+    <header>
+        <h1>View Cat Photos</h1>
+    </header>
+    <main>
+        <div>
+            Logged in as: {{ request.user.username }}
+            {% for post in cat_posts %}
+                <div>
+                    <a href="{% url 'detail' post.pk %}"><img src={{ post.image.url }} style="width:420px;height:360px;"></a></li>
+                    <p>Posted by: {{ post.user.username }}</p>
+                    <p>Comment: {{ post.comment }}</p>
+                    <p>Date Added: {{ post.date_added }}</p>
+                </div>
+                {% if request.user == post.user %}
+                    <form method="post" action="{% url 'delete_photo' post.pk %}">
+                        {% csrf_token %}
+                        <button type="submit">Delete</button>
+                    </form>
+                {% endif %}
+            {% empty %}
+                <p>No cat photos available.</p>
+            {% endfor %}
+        </div>
+    </main>
+</body>
+
+{% endblock %}
